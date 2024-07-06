@@ -1,0 +1,8 @@
+.calendar-custom {
+  display: flex;
+  align-items: center;
+  background-color: #333;
+  border: 0;
+  color: white;
+  cursor: pointer;
+}

@@ -9,7 +9,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <div className="flex-container">
+      <div>
         <App />
       </div>
     </ThemeProvider>

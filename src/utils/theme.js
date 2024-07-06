@@ -9,6 +9,12 @@ const theme = createTheme({
     secondary: {
       main: "#dc004e", // 분홍색
     },
+    white: {
+      main: "#f0f0f0",
+    },
+    black: {
+      main: "#333",
+    },
   },
   typography: {
     fontFamily: "Roboto, Arial, sans-serif",
