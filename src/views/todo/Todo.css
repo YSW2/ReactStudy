@@ -45,7 +45,10 @@ ul {
   display: flex;
   flex-direction: row;
   align-items: center;
-  border-bottom: 1px solid #ddd;
+  border: 1px solid #ddd;
+  background-color: #f3f3f3;
+  margin-bottom: 10px;
+  border-radius: 5px;
 }
 .todo-list-completed {
   text-decoration: line-through;
@@ -55,6 +58,8 @@ ul {
 .todo-input-edit {
   border-width: 0;
   border-bottom: 1px solid #aaa;
+  background-color: inherit;
+  font-size: inherit;
 }
 .todo-input-edit:focus {
   outline: 0;
