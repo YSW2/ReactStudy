@@ -46,7 +46,18 @@ ul {
   flex-direction: row;
   align-items: center;
   border-bottom: 1px solid #ddd;
-  text-align: center;
+}
+.todo-list-completed {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.todo-input-edit {
+  border-width: 0;
+  border-bottom: 1px solid #aaa;
+}
+.todo-input-edit:focus {
+  outline: 0;
 }
 
 .date-column {
