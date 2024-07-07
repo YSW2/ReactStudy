@@ -3,13 +3,14 @@
   flex-direction: column;
   align-items: center;
 }
-
+.todo-app-container {
+  width: 80%;
+}
 .todo-input-bar {
   display: flex;
   align-items: center;
   background-color: #333;
   margin-top: 20px;
-  width: 80%;
   border-radius: 5px;
   padding-left: 10px;
 }
@@ -31,14 +32,23 @@
 .todo-input:focus {
   outline: none;
 }
-
+.filter-button-container {
+  margin-top: 15px;
+}
+.filter-button {
+  border: 1px solid #bbb;
+  border-radius: 3px;
+  width: 10%;
+}
+.filter-button-on {
+  background-color: #b8fcb8;
+}
 ul {
   padding: 0;
 }
 
 .todo-list-table {
-  width: 80%;
-  margin-top: 20px;
+  margin-top: 5px;
 }
 
 .todo-list-row {

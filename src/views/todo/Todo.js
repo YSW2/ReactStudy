@@ -17,6 +17,7 @@ const Todo = () => {
   const [editInput, setEditInput] = useState("");
   const [editDate, setEditDate] = useState("");
   const [enabled, setEnabled] = useState(false);
+  const [notComplete, setNotComplete] = useState(false);
 
   useEffect(() => {
     const animation = requestAnimationFrame(() => setEnabled(true));
@@ -85,6 +86,9 @@ const Todo = () => {
       setEditId("");
     }
   };
+  const handleDisableComplete = () => {
+    setNotComplete(!notComplete);
+  };
 
   const onDragEnd = (result) => {
     if (!result.destination) {
@@ -104,114 +108,133 @@ const Todo = () => {
 
   return (
     <div className="todo-app">
-      <div className="todo-input-bar">
-        <div className="todo-input-calendar">
-          <Calendar
-            selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
+      <div className="todo-app-container">
+        <div className="todo-input-bar">
+          <div className="todo-input-calendar">
+            <Calendar
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+            />
+          </div>
+          <input
+            className="todo-input"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyPress={(e) => e.key === "Enter" && addTodo()}
+            placeholder="할 일을 입력하세요"
           />
+          <IconButton
+            size="large"
+            color="white"
+            aria-label="add"
+            onClick={addTodo}
+          >
+            <AddIcon />
+          </IconButton>
         </div>
-        <input
-          className="todo-input"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyPress={(e) => e.key === "Enter" && addTodo()}
-          placeholder="할 일을 입력하세요"
-        />
-        <IconButton
-          size="large"
-          color="white"
-          aria-label="add"
-          onClick={addTodo}
-        >
-          <AddIcon />
-        </IconButton>
+        <div className="filter-button-container">
+          <button
+            className={`filter-button ${notComplete ? "filter-button-on" : ""}`}
+            onClick={handleDisableComplete}
+          >
+            미완료만
+          </button>
+        </div>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="droppable">
+            {(provided) => (
+              <ul
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className="todo-list-table"
+              >
+                {todos.map(
+                  (todo, index) =>
+                    !(notComplete && todo.completed) && (
+                      <Draggable
+                        key={todo.id}
+                        draggableId={todo.id}
+                        index={index}
+                      >
+                        {(provided) => (
+                          <li
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className={`todo-list-row ${
+                              todo.completed ? "todo-list-completed" : ""
+                            }`}
+                          >
+                            <div className="complete-column">
+                              <Checkbox
+                                checked={todo.completed}
+                                onChange={() => handleCompleted(todo.id)}
+                                color="success"
+                              />
+                            </div>
+                            {editId === todo.id ? (
+                              <>
+                                <div className="date-column">
+                                  <Calendar
+                                    selectedDate={editDate}
+                                    setSelectedDate={setEditDate}
+                                  />
+                                </div>
+                                <div className="work-column">
+                                  <input
+                                    className="todo-input-edit"
+                                    value={editInput}
+                                    onChange={(e) =>
+                                      setEditInput(e.target.value)
+                                    }
+                                    placeholder="할 일을 입력하세요"
+                                  />
+                                </div>
+                                <IconButton
+                                  size="large"
+                                  color="black"
+                                  onClick={editTodo}
+                                >
+                                  <CheckIcon />
+                                </IconButton>
+                              </>
+                            ) : (
+                              <>
+                                <div className="date-column">
+                                  {format(todo.date, "yyyy-MM-dd")}
+                                </div>
+                                <div className="work-column">{todo.text}</div>
+                                <IconButton
+                                  size="large"
+                                  color="black"
+                                  aria-label="edit"
+                                  onClick={() =>
+                                    handleEdit(todo.id, todo.date, todo.text)
+                                  }
+                                >
+                                  <EditIcon />
+                                </IconButton>
+                                <IconButton
+                                  size="large"
+                                  color="black"
+                                  aria-label="delete"
+                                  onClick={() => removeTodo(todo.id)}
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </>
+                            )}
+                          </li>
+                        )}
+                      </Draggable>
+                    )
+                )}
+                {provided.placeholder}
+              </ul>
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable">
-          {(provided) => (
-            <ul
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              className="todo-list-table"
-            >
-              {todos.map((todo, index) => (
-                <Draggable key={todo.id} draggableId={todo.id} index={index}>
-                  {(provided) => (
-                    <li
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      className={`todo-list-row ${
-                        todo.completed ? "todo-list-completed" : ""
-                      }`}
-                    >
-                      <div className="complete-column">
-                        <Checkbox
-                          checked={todo.completed}
-                          onChange={() => handleCompleted(todo.id)}
-                          color="success"
-                        />
-                      </div>
-                      {editId === todo.id ? (
-                        <>
-                          <div className="date-column">
-                            <Calendar
-                              selectedDate={editDate}
-                              setSelectedDate={setEditDate}
-                            />
-                          </div>
-                          <div className="work-column">
-                            <input
-                              className="todo-input-edit"
-                              value={editInput}
-                              onChange={(e) => setEditInput(e.target.value)}
-                              placeholder="할 일을 입력하세요"
-                            />
-                          </div>
-                          <IconButton
-                            size="large"
-                            color="black"
-                            onClick={editTodo}
-                          >
-                            <CheckIcon />
-                          </IconButton>
-                        </>
-                      ) : (
-                        <>
-                          <div className="date-column">
-                            {format(todo.date, "yyyy-MM-dd")}
-                          </div>
-                          <div className="work-column">{todo.text}</div>
-                          <IconButton
-                            size="large"
-                            color="black"
-                            aria-label="edit"
-                            onClick={() =>
-                              handleEdit(todo.id, todo.date, todo.text)
-                            }
-                          >
-                            <EditIcon />
-                          </IconButton>
-                          <IconButton
-                            size="large"
-                            color="black"
-                            aria-label="delete"
-                            onClick={() => removeTodo(todo.id)}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </>
-                      )}
-                    </li>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </ul>
-          )}
-        </Droppable>
-      </DragDropContext>
     </div>
   );
 };
