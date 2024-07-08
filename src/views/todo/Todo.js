@@ -174,21 +174,23 @@ const Todo = () => {
                             </div>
                             {editId === todo.id ? (
                               <>
-                                <div className="date-column">
-                                  <Calendar
-                                    selectedDate={editDate}
-                                    setSelectedDate={setEditDate}
-                                  />
-                                </div>
-                                <div className="work-column">
-                                  <input
-                                    className="todo-input-edit"
-                                    value={editInput}
-                                    onChange={(e) =>
-                                      setEditInput(e.target.value)
-                                    }
-                                    placeholder="할 일을 입력하세요"
-                                  />
+                                <div className="column-container">
+                                  <div className="date-column">
+                                    <Calendar
+                                      selectedDate={editDate}
+                                      setSelectedDate={setEditDate}
+                                    />
+                                  </div>
+                                  <div className="work-column">
+                                    <input
+                                      className="todo-input-edit"
+                                      value={editInput}
+                                      onChange={(e) =>
+                                        setEditInput(e.target.value)
+                                      }
+                                      placeholder="할 일을 입력하세요"
+                                    />
+                                  </div>
                                 </div>
                                 <IconButton
                                   size="large"
@@ -200,10 +202,12 @@ const Todo = () => {
                               </>
                             ) : (
                               <>
-                                <div className="date-column">
-                                  {format(todo.date, "yyyy-MM-dd")}
+                                <div className="column-container">
+                                  <div className="date-column">
+                                    {format(todo.date, "yyyy-MM-dd")}
+                                  </div>
+                                  <div className="work-column">{todo.text}</div>
                                 </div>
-                                <div className="work-column">{todo.text}</div>
                                 <IconButton
                                   size="large"
                                   color="black"
